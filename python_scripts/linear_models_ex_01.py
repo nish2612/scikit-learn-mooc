@@ -58,8 +58,14 @@ flipper_length_range = np.linspace(data.min(), data.max(), num=300)
 
 # %%
 # Write your code here.
-# weights = [...]
-# intercepts = [...]
+ weights = [40,50,-30]
+intercepts = [12000,500,-5000]
+import seaborn as sns
+ax=sns.scatterplot(data=penguins,x='feature_name',y=target_name,color=balck,alpha=0.5)
+label = "{0:.2f} (g / mm) * flipper length + {1:.2f} (g)"
+for weight ,interceps in zip(weights,intercepts):
+    predicted_body_mass=linear_model_flipper_mass(flipper_length_range,weight,intercept)
+    ax.plot(flipper_length_range,predicted_body_mass,label=label.format(weight,intercept))
 
 
 # %% [markdown]
@@ -74,18 +80,19 @@ flipper_length_range = np.linspace(data.min(), data.max(), num=300)
 
 # %%
 def goodness_fit_measure(true_values, predictions):
-    # Write your code here.
+    errors=np.ravel(true_values)-np.ravel(predictions)
     # Define a measure indicating the goodness of fit of a model given the true
     # values and the model predictions.
-    pass
+   return np.mean(np.abs(errors))
 
 
 # %%
 # Uncomment the code below.
-# for model_idx, (weight, intercept) in enumerate(zip(weights, intercepts)):
-#     target_predicted = linear_model_flipper_mass(data, weight, intercept)
-#     print(f"Model #{model_idx}:")
-#     print(f"{weight:.2f} (g / mm) * flipper length + {intercept:.2f} (g)")
-#     print(f"Error: {goodness_fit_measure(target, target_predicted):.3f}\n")
+for model_idx, (weight, intercept) in enumerate(zip(weights, intercepts)):
+    target_predicted = linear_model_flipper_mass(data, weight, intercept)
+        print(f"Model #{model_idx}:")
+     print(f"{weight:.2f} (g / mm) * flipper length + {intercept:.2f} (g)")
+
+     print(f"Error: {goodness_fit_measure(target, target_predicted):.3f}\n")
 
 # %%
